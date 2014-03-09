@@ -27,7 +27,7 @@ class StreamOperations:
     streamCollection = dict()                
 
     def startStreaming(self, auth, keywords):            
-        #if stream connection already set then disconnect previous connection and start new
+        #if stream connection already set then disconnect previous connection and start new        
         if(auth.access_token.key in StreamOperations.streamCollection):
             StreamOperations.streamCollection[auth.access_token.key].disconnect()
             print 'disconnected'
@@ -35,6 +35,7 @@ class StreamOperations:
     	api = tweepy.API(auth)
     	listenerObj = CustomStreamListener(api)        
         sapi = tweepy.streaming.Stream(auth, listenerObj) 
+        #storing stream object for disconnecting it later on as tweepy starts thread for each stream
         StreamOperations.streamCollection[auth.access_token.key] = sapi
         print StreamOperations.streamCollection
         print 'stream started.....'        
