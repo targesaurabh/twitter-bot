@@ -1,16 +1,16 @@
 import tweepy
-
+#to get recent tweets including given hashtags
 class CustomStreamListener(tweepy.StreamListener):      
     def __init__(self, api_arg):
-    	self.count = 0
-    	self.api = api_arg
+    	self.count = 0      
+    	self.api = api_arg  #tweepy object for favorating tweets
 
     def on_status(self, status):   
         print 'Post number : ' + str(self.count)
         self.count = self.count + 1 
         try:
             if (not status.favorited) and (status.lang.strip()=='en'):
-                self.api.create_favorite(status.id)                
+                self.api.create_favorite(status.id)  #favorite tweet with given tweet id                
         except Exception, e:
             print e  
         
@@ -23,13 +23,11 @@ class CustomStreamListener(tweepy.StreamListener):
         return True
 
 class StreamOperations:
-    streamCollection = dict()            
-    def keywordChange(self, auth):    	
-    	print 'disconnecting'
-        sapi.disconnect()            
-        self.startStreaming(auth)
+    #to store Stream class object for disconnecting previous stream connection
+    streamCollection = dict()                
 
     def startStreaming(self, auth, keywords):            
+        #if stream connection already set then disconnect previous connection and start new
         if(auth.access_token.key in StreamOperations.streamCollection):
             StreamOperations.streamCollection[auth.access_token.key].disconnect()
             print 'disconnected'
